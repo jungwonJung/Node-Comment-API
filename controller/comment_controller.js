@@ -11,6 +11,7 @@ require("dotenv").config();
 
 const MY_SECRET_KEY = process.env.SECRET_KEY;
 
+// 댓글 작성
 exports.write = async (request, response) => {
   const { text } = request.body;
   const { token } = request.headers;
@@ -22,25 +23,60 @@ exports.write = async (request, response) => {
     let user = await User.findOne({ _id: decoded_token.user });
     let userId = user._id;
     let saveData = await { userId, text };
-    let textInfo = await new Comment(saveData);
+    let commentInfo = await new Comment(saveData);
 
-    textInfo.created = Date.now();
-    textInfo.save();
+    commentInfo.created = Date.now();
+    commentInfo.save();
 
     return response.send({
       result: "댓글이 작성되었습니다",
-      textInfo,
+      commentInfo,
     });
   }
 };
 
+// 대댓글 작성
+exports.reCommentWrite = async (request, response) => {
+  const { text, id } = request.body;
+  const { token } = request.headers;
+  const decoded_token = jwt.verify(token, MY_SECRET_KEY);
+
+  if (!text) return response.send("내용을 작성해주세요");
+
+  if (decoded_token) {
+    let user = await User.findOne({ _id: decoded_token.user });
+    let userId = user._id;
+    let comment = await Comment.findOne({ ObjectId: id });
+    let parentComment = comment._id;
+    let saveData = await { userId, parentComment, text };
+    let reCommentInfo = await new Comment(saveData);
+
+    reCommentInfo.created = Date.now();
+    reCommentInfo.save();
+
+    let reCommentInfoId = reCommentInfo._id;
+    let updateComment = await Comment.updateOne(
+      {
+        ObjectId: id,
+      },
+      { $set: { reComment: reCommentInfoId } }
+    );
+    return response.send({
+      updateComment,
+      result: "대댓글이 작성되었습니다",
+      reCommentInfo,
+    });
+  }
+};
+
+// 내가쓴 댓글 조회
 exports.getMy = async (request, response) => {
   const { next, previous } = request.query;
   const { sort } = request.query;
   const { token } = request.headers;
   const decoded_token = jwt.verify(token, MY_SECRET_KEY);
 
-  const popul = { path: "userId", select: "accountName reComment created updated" };
+  const popul = { path: "userId", select: "accountName created updated" };
 
   const myCustomLabels = {
     totalDocs: false,
@@ -76,11 +112,19 @@ exports.getMy = async (request, response) => {
   }
 };
 
+// 댓글 전체조회
 exports.getAll = async (request, response) => {
   const { next, previous } = request.query;
   const { sort } = request.query;
 
-  const popul = { path: "userId", select: "accountName reComment created updated" };
+  const popul = {
+    path: "userId reComment",
+    select: "accountName created updated text userId",
+    populate: {
+      path: "userId",
+      select: "accountName created updated",
+    },
+  };
 
   const myCustomLabels = {
     totalDocs: false,
@@ -113,6 +157,7 @@ exports.getAll = async (request, response) => {
   return response.send(list);
 };
 
+//댓글 수정
 exports.update = async (request, response) => {
   const { token } = request.headers;
   const { id, text } = request.body;
@@ -135,6 +180,7 @@ exports.update = async (request, response) => {
   }
 };
 
+// 댓글 삭제
 exports.delete = async (request, response) => {
   const { token } = request.headers;
   const { id } = request.body;

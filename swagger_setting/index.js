@@ -3,7 +3,6 @@
  * tags:
  *   - name: Account
  *   - name: Comment
- *   - name: reComment
  */
 /**
  * @swagger
@@ -106,6 +105,45 @@
 /**
  * @swagger
  *  paths:
+ *    /api/write/recomment:
+ *      post:
+ *        tags:
+ *        - "Comment"
+ *        summary: ""
+ *        description: "대댓글 작성하기"
+ *        consumes:
+ *        - "application/json"
+ *        produces:
+ *        - "application/json"
+ *        parameters:
+ *        - in: "header"
+ *          name: "token"
+ *          description: "jwt Token"
+ *          required: true
+ *          schema:
+ *            type: string
+ *        - in: "query"
+ *          name: "id"
+ *          required: true
+ *          schema:
+ *            properties:
+ *              id:
+ *                  type: string
+ *        - in: "body"
+ *          name: "data"
+ *          required: false
+ *          schema:
+ *            properties:
+ *              text:
+ *                  type: string
+ *        responses:
+ *          200:
+ *            description: "[완료] 대댓글작성이 성공 되었습니다."
+ */
+
+/**
+ * @swagger
+ *  paths:
  *    /api/write/mylist:
  *      get:
  *        tags:
@@ -201,10 +239,10 @@
  *          required: true
  *          schema:
  *            type: string
- *        - in: "body"
+ *        - in: "query"
  *          name: "id"
  *          description : "수정할 댓글의 _id"
- *          required: false
+ *          required: true
  *          schema:
  *            properties:
  *              id:
@@ -245,110 +283,6 @@
  *        - in: "query"
  *          name: "id"
  *          description : "삭제할 댓글의 _id"
- *          required: true
- *          schema:
- *            properties:
- *              sort:
- *                  type: string
- *        responses:
- *          200:
- *            description: "[삭제 성공]"
- */
-/**
- * @swagger
- *  paths:
- *    /api/recomment/write:
- *      post:
- *        tags:
- *        - "reComment"
- *        summary: ""
- *        description: "댓글 작성하기"
- *        consumes:
- *        - "application/json"
- *        produces:
- *        - "application/json"
- *        parameters:
- *        - in: "header"
- *          name: "token"
- *          description: "jwt Token"
- *          required: true
- *          schema:
- *            type: string
- *        - in: "body"
- *          name: "data"
- *          required: false
- *          schema:
- *            properties:
- *              text:
- *                  type: string
- *        responses:
- *          200:
- *            description: "[완료] 대댓글작성이 성공 되었습니다."
- */
-/**
- * @swagger
- *  paths:
- *    /api/recomment/update:
- *      patch:
- *        tags:
- *        - "reComment"
- *        summary: ""
- *        description: "내 대댓글 수정"
- *        consumes:
- *        - "application/json"
- *        produces:
- *        - "application/json"
- *        parameters:
- *        - in: "header"
- *          name: "token"
- *          description: "jwt Token"
- *          required: true
- *          schema:
- *            type: string
- *        - in: "body"
- *          name: "id"
- *          description : "수정할 대댓글의 _id"
- *          required: false
- *          schema:
- *            properties:
- *              id:
- *                  type: string
- *        - in: "body"
- *          name: "data"
- *          required: false
- *          schema:
- *            properties:
- *              text:
- *                  type: string
- *        responses:
- *          200:
- *            description: "[수정 성공]"
- *          500:
- *            description: "[수정 실패]"
- */
-/**
- * @swagger
- *  paths:
- *    /api/recomment/delete:
- *      delete:
- *        tags:
- *        - "reComment"
- *        summary: ""
- *        description: "내 대댓글 삭제"
- *        consumes:
- *        - "application/json"
- *        produces:
- *        - "application/json"
- *        parameters:
- *        - in: "header"
- *          name: "token"
- *          description: "jwt Token"
- *          required: true
- *          schema:
- *            type: string
- *        - in: "query"
- *          name: "id"
- *          description : "삭제할 대댓글의 _id"
  *          required: true
  *          schema:
  *            properties:

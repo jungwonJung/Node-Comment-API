@@ -5,6 +5,9 @@ const router = express.Router();
 // 댓글작성
 router.post("/write", commentController.write);
 
+// 대댓글작성
+router.post("/write/recomment", commentController.reCommentWrite);
+
 // 내가 쓴 댓글 조회
 router.get("/write/mylist", commentController.getMy);
 
