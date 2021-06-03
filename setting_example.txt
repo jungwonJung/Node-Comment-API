@@ -1,0 +1,8 @@
+# .env 파일을 만들어서 토큰의 SECRET_KEY 값을 설정해주고
+# 몽고db 클라우드 서버를 통해 db 를연결했는데 
+# 같은 방법으로 연결할시 내가 사용할 클라우드db 의 url 을 적어준다 
+
+
+# MONGODB_URL= example
+
+# SECRET_KEY=example
