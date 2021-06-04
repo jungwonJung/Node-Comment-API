@@ -76,7 +76,14 @@ exports.getMy = async (request, response) => {
   const { token } = request.headers;
   const decoded_token = jwt.verify(token, MY_SECRET_KEY);
 
-  const popul = { path: "userId", select: "accountName created updated" };
+  const popul = {
+    path: "userId reComment",
+    select: "accountName created updated text userId",
+    populate: {
+      path: "userId",
+      select: "accountName created updated",
+    },
+  };
 
   const myCustomLabels = {
     totalDocs: false,
@@ -104,7 +111,7 @@ exports.getMy = async (request, response) => {
   if (decoded_token) {
     let myComment = await Comment.find({ userId: decoded_token.user });
     let commentId = myComment.map((s) => s.userId);
-    let docs = await Comment.paginate({ userId: { $in: commentId } }, options, next, previous);
+    let docs = await Comment.paginate({ userId: { $in: commentId }, isDeleted: false }, options, next, previous);
     let result = await docs.result;
     let paginator = await docs.paginator;
     let list = { result, paginator };
@@ -149,7 +156,7 @@ exports.getAll = async (request, response) => {
     nextPage: 0,
   };
 
-  let docs = await Comment.paginate({}, options, next, previous);
+  let docs = await Comment.paginate({ isDeleted: false }, options, next, previous);
   let totalCount = await Comment.countDocuments();
   let result = await docs.result;
   let paginator = await docs.paginator;

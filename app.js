@@ -17,6 +17,8 @@ app.use(cors());
 
 app.use("/api", require("./routes/user_routes"));
 app.use("/api", require("./routes/comment_routes"));
+app.use("/api", require("./routes/like_routes"));
+app.use("/api", require("./routes/hate_routes"));
 
 app.listen(3000, function (err) {
   console.log("서버 구동중");

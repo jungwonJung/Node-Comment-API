@@ -3,6 +3,8 @@
  * tags:
  *   - name: Account
  *   - name: Comment
+ *   - name: Like
+ *   - name: Hate
  */
 /**
  * @swagger
@@ -291,4 +293,66 @@
  *        responses:
  *          200:
  *            description: "[삭제 성공]"
+ */
+/**
+ * @swagger
+ *  paths:
+ *    /api/like:
+ *      post:
+ *        tags:
+ *        - "Like"
+ *        summary: ""
+ *        description: "좋아요 설정 및 해제"
+ *        consumes:
+ *        - "application/json"
+ *        produces:
+ *        - "application/json"
+ *        parameters:
+ *        - in: "header"
+ *          name: "token"
+ *          description: "jwt Token"
+ *          required: true
+ *          schema:
+ *            type: string
+ *        - in: "query"
+ *          name: "CommentId"
+ *          required: true
+ *          schema:
+ *            properties:
+ *              id:
+ *                  type: string
+ *        responses:
+ *          200:
+ *            description: "좋아요 설정"
+ */
+/**
+ * @swagger
+ *  paths:
+ *    /api/hate:
+ *      post:
+ *        tags:
+ *        - "Hate"
+ *        summary: ""
+ *        description: "싫어요 설정 및 해제"
+ *        consumes:
+ *        - "application/json"
+ *        produces:
+ *        - "application/json"
+ *        parameters:
+ *        - in: "header"
+ *          name: "token"
+ *          description: "jwt Token"
+ *          required: true
+ *          schema:
+ *            type: string
+ *        - in: "query"
+ *          name: "CommentId"
+ *          required: true
+ *          schema:
+ *            properties:
+ *              id:
+ *                  type: string
+ *        responses:
+ *          200:
+ *            description: "싫어요 설정"
  */

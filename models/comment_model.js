@@ -24,6 +24,14 @@ const commentSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  isLiked: {
+    type: Number,
+    default: 0,
+  },
+  isHated: {
+    type: Number,
+    default: 0,
+  },
   created: {
     type: Number,
   },

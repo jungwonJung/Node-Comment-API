@@ -17,6 +17,18 @@ npm init
 npm install
 ```  
   
+## 실행 방법
+
+OS X & 리눅스:
+1. Change Directory
+```sh
+cd jungwon_mission
+```
+2.  start app.js
+```
+node app.js
+```
+
 ## DB연결방법  
 
 DB 는 MongoDB Cloud 서버를 사용했으며
